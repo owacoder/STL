@@ -39,6 +39,11 @@ _EXPORT_STD struct to_chars_result {
 #if _HAS_CXX20
     _NODISCARD friend bool operator==(const to_chars_result&, const to_chars_result&) = default;
 #endif // _HAS_CXX20
+#if _HAS_CXX26
+    _NODISCARD constexpr explicit operator bool() const noexcept {
+        return ec == errc{};
+    }
+#endif // _HAS_CXX26
 };
 
 _STD_END

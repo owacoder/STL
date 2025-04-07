@@ -210,6 +210,11 @@ _EXPORT_STD struct from_chars_result {
 #if _HAS_CXX20
     _NODISCARD friend bool operator==(const from_chars_result&, const from_chars_result&) = default;
 #endif // _HAS_CXX20
+#if _HAS_CXX26
+    _NODISCARD constexpr explicit operator bool() const noexcept {
+        return ec == errc{};
+    }
+#endif // _HAS_CXX26
 };
 
 // convert ['0', '9'] ['A', 'Z'] ['a', 'z'] to [0, 35], everything else to 255

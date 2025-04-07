@@ -1687,7 +1687,6 @@ _EMIT_STL_ERROR(STL1004, "C++98 unexpected() is incompatible with C++23 unexpect
 #define __cpp_lib_scoped_lock           201703L
 #define __cpp_lib_shared_ptr_weak_type  201606L
 #define __cpp_lib_string_view           201803L
-#define __cpp_lib_to_chars              201611L
 #endif // _HAS_CXX17
 
 // C++20
@@ -1829,6 +1828,12 @@ _EMIT_STL_ERROR(STL1004, "C++98 unexpected() is incompatible with C++23 unexpect
 #endif // _HAS_CXX23
 
 // macros with language mode sensitivity
+#if _HAS_CXX26
+#define __cpp_lib_to_chars 202306L // P2497R0 Testing for Success or Failure of <charconv> Functions
+#elif _HAS_CXX17
+#define __cpp_lib_to_chars 201611L // P0067R5 Elementary string conversions / P0682R1 Reparing elementary string conversions
+#endif
+
 #if _HAS_CXX20
 #define __cpp_lib_array_constexpr 201811L // P1032R1 Miscellaneous constexpr
 #elif _HAS_CXX17
