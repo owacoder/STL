@@ -468,16 +468,16 @@ constexpr int _Log10_ceil(_Ty _Val) {
 
 template <class _Elem, class _Ty>
 _NODISCARD basic_string<_Elem> _Floating_to_string(const _Ty _Val) {
-    constexpr auto _Ceil = _Log10_ceil(_STD numeric_limits<_Ty>::max_exponent10);
-    constexpr auto _Len = 4 + 
-        _STD numeric_limits<_Ty>::max_digits10 + 
-        (_Ceil > 2 ? _Ceil : 2);
+    constexpr auto _Fmt     = _STD chars_format::general;
+    constexpr auto _Prec    = _STD numeric_limits<_Ty>::max_digits10;
+    constexpr auto _Max_exp = _STD numeric_limits<_Ty>::max_exponent10;
+    constexpr auto _Ceil    = _Log10_ceil(_Max_exp);
+    constexpr auto _Len     = 4 + _Prec + (_Ceil > 2 ? _Ceil : 2);
     char _Buf[_Len] [[indeterminate]];
 
-    auto [_Ptr, _Ec] =
-        _STD to_chars(_Buf, _Buf + _Len, _Val, _STD chars_format::general, _STD numeric_limits<_Ty>::max_digits10);
+    auto [_Ptr, _Ec] = _STD to_chars(_Buf, _Buf + _Len, _Val, _Fmt, _Prec);
 
-    return { _Buf, _Ptr };
+    return basic_string<_Elem>(_Buf, _Ptr);
 }
 #endif // _HAS_CXX26
 
