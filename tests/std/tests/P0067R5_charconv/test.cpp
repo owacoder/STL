@@ -183,12 +183,18 @@ void test_common_to_chars(
         if (n < correct.size()) {
             assert(result.ptr == last);
             assert(result.ec == errc::value_too_large);
+#if _HAS_CXX26
+            assert(result == false);
+#endif
             assert(all_of(buff_begin, first, is_fill_char));
             // [first, last) is unspecified
             assert(all_of(last, buff_end, is_fill_char));
         } else {
             assert(result.ptr == first + correct.size());
             assert(result.ec == errc{});
+#if _HAS_CXX26
+            assert(result == true);
+#endif
             assert(all_of(buff_begin, first, is_fill_char));
             assert(equal(first, result.ptr, correct.begin(), correct.end()));
             assert(all_of(result.ptr, buff_end, is_fill_char));
@@ -216,6 +222,10 @@ _CONSTEXPR23 void test_integer_to_chars(const T value, const optional<int> opt_b
         assert(from_res.ptr == correct_last);
         assert(from_res.ec == errc{});
         assert(dest == value);
+
+#if _HAS_CXX26
+        assert(from_res == (from_res.ec == errc{}));
+#endif
     }
 }
 
@@ -438,6 +448,10 @@ _CONSTEXPR23 void test_from_chars(const string_view input, const BaseOrFmt base_
 
     assert(result.ptr == input.data() + correct_idx);
     assert(result.ec == correct_ec);
+
+#if _HAS_CXX26
+    assert(result == (result.ec == correct_ec));
+#endif
 
     if (correct_ec == errc{} || (is_floating_point_v<T> && correct_ec == errc::result_out_of_range)) {
         if constexpr (is_floating_point_v<T>) {
