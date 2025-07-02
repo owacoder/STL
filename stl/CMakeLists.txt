@@ -133,6 +133,7 @@ set(HEADERS
     ${CMAKE_CURRENT_LIST_DIR}/inc/strstream
     ${CMAKE_CURRENT_LIST_DIR}/inc/syncstream
     ${CMAKE_CURRENT_LIST_DIR}/inc/system_error
+    ${CMAKE_CURRENT_LIST_DIR}/inc/text_encoding
     ${CMAKE_CURRENT_LIST_DIR}/inc/thread
     ${CMAKE_CURRENT_LIST_DIR}/inc/tuple
     ${CMAKE_CURRENT_LIST_DIR}/inc/type_traits
@@ -266,6 +267,7 @@ set(SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/stdthrow.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/syserror.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/taskscheduler.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/text_encoding.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/thread0.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/uncaught_exception.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/uncaught_exceptions.cpp
