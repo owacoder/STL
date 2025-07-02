@@ -8,6 +8,7 @@
 #include <yvals_core.h>
 #if _STL_COMPILER_PREPROCESSOR
 #include <xstring>
+#include <charconv>
 // The <cctype> include below is to workaround many projects that assumed
 // <string> includes it. We workaround it instead of fixing all the upstream
 // projects because <cctype> is inexpensive. See VSO-663136.
@@ -473,7 +474,7 @@ _NODISCARD basic_string<_Elem> _Floating_to_string(const _Ty _Val) {
     constexpr auto _Max_exp = _STD numeric_limits<_Ty>::max_exponent10;
     constexpr auto _Ceil    = _Log10_ceil(_Max_exp);
     constexpr auto _Len     = 4 + _Prec + (_Ceil > 2 ? _Ceil : 2);
-    char _Buf[_Len] [[indeterminate]];
+    char _Buf[_Len];
 
     auto [_Ptr, _Ec] = _STD to_chars(_Buf, _Buf + _Len, _Val, _Fmt, _Prec);
 
@@ -559,15 +560,15 @@ _EXPORT_STD _NODISCARD inline wstring to_wstring(unsigned long long _Val) {
 }
 
 #if _HAS_CXX26
-_EXPORT_STD _NODISCARD inline wstring to_string(float _Val) {
+_EXPORT_STD _NODISCARD inline wstring to_wstring(float _Val) {
     return _Floating_to_string<wchar_t>(_Val);
 }
 
-_EXPORT_STD _NODISCARD inline wstring to_string(double _Val) {
+_EXPORT_STD _NODISCARD inline wstring to_wstring(double _Val) {
     return _Floating_to_string<wchar_t>(_Val);
 }
 
-_EXPORT_STD _NODISCARD inline wstring to_string(long double _Val) {
+_EXPORT_STD _NODISCARD inline wstring to_wstring(long double _Val) {
     return _Floating_to_string<wchar_t>(_Val);
 }
 #else // !_HAS_CXX26
