@@ -12,6 +12,7 @@
 _EMIT_STL_WARNING(STL4038, "The contents of <text_encoding> are available only with C++26 or later.");
 #else // ^^^ !_HAS_CXX26 / _HAS_CXX26 vvv
 
+#include <cctype>
 #include <string_view>
 
 #pragma pack(push, _CRT_PACKING)
@@ -320,8 +321,109 @@ private:
 	id _Mib = id::unknown;
 	char _Name[max_name_length+1]{};
 
+	static constexpr char _NormalizeNameChar(char _C) {
+		switch (_C) {
+		case '0': [[fallthrough]];
+		case '1': [[fallthrough]];
+		case '2': [[fallthrough]];
+		case '3': [[fallthrough]];
+		case '4': [[fallthrough]];
+		case '5': [[fallthrough]];
+		case '6': [[fallthrough]];
+		case '7': [[fallthrough]];
+		case '8': [[fallthrough]];
+		case '9': [[fallthrough]];
+		case 'A': [[fallthrough]];
+		case 'B': [[fallthrough]];
+		case 'C': [[fallthrough]];
+		case 'D': [[fallthrough]];
+		case 'E': [[fallthrough]];
+		case 'F': [[fallthrough]];
+		case 'G': [[fallthrough]];
+		case 'H': [[fallthrough]];
+		case 'I': [[fallthrough]];
+		case 'J': [[fallthrough]];
+		case 'K': [[fallthrough]];
+		case 'L': [[fallthrough]];
+		case 'M': [[fallthrough]];
+		case 'N': [[fallthrough]];
+		case 'O': [[fallthrough]];
+		case 'P': [[fallthrough]];
+		case 'Q': [[fallthrough]];
+		case 'R': [[fallthrough]];
+		case 'S': [[fallthrough]];
+		case 'T': [[fallthrough]];
+		case 'U': [[fallthrough]];
+		case 'V': [[fallthrough]];
+		case 'W': [[fallthrough]];
+		case 'X': [[fallthrough]];
+		case 'Y': [[fallthrough]];
+		case 'Z': return _C;
+		case 'a': return 'A';
+		case 'b': return 'B';
+		case 'c': return 'C';
+		case 'd': return 'D';
+		case 'e': return 'E';
+		case 'f': return 'F';
+		case 'g': return 'G';
+		case 'h': return 'H';
+		case 'i': return 'I';
+		case 'j': return 'J';
+		case 'k': return 'K';
+		case 'l': return 'L';
+		case 'm': return 'M';
+		case 'n': return 'N';
+		case 'o': return 'O';
+		case 'p': return 'P';
+		case 'q': return 'Q';
+		case 'r': return 'R';
+		case 's': return 'S';
+		case 't': return 'T';
+		case 'u': return 'U';
+		case 'v': return 'V';
+		case 'w': return 'W';
+		case 'x': return 'X';
+		case 'y': return 'Y';
+		case 'z': return 'Z';
+		default: return 0;
+		}
+	}
+
 	static constexpr bool _NamesEqual(string_view _Lhs, string_view _Rhs) {
-		
+		while (!_Lhs.empty() && !_Rhs.empty()) {
+			auto _LNorm = _NormalizeNameChar(_Lhs.front());
+			if (!_LNorm) {
+				_Lhs.remove_prefix(1);
+				continue;
+			}
+
+			auto _RNorm = _NormalizeNameChar(_Rhs.front());
+			if (!_RNorm) {
+				_Rhs.remove_prefix(1);
+				continue;
+			}
+
+			if (_LNorm != _RNorm) {
+				return false;
+			}
+
+			_Lhs.remove_prefix(1);
+			_Rhs.remove_prefix(1);
+		}
+
+		for (auto _Chr : _Lhs) {
+			if (_NormalizeNameChar(_Chr)) {
+				return false;
+			}
+		}
+
+		for (auto _Chr : _Rhs) {
+			if (_NormalizeNameChar(_Chr)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 };
 
